@@ -1,0 +1,120 @@
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+-->
+<htmlform>
+
+    <macros>
+        headerColor = #009d8e
+        fontOnHeaderColor = white
+    </macros>
+
+    <style>
+        .section {
+            border: 1px solid $headerColor;
+            padding: 2px;
+            text-align: left;
+            margin-bottom: 1em;
+        }
+
+        .sectionHeader {
+            background-color: $headerColor;
+            color: $fontOnHeaderColor;
+            display: block;
+            padding: 2px;
+            font-weight: bold;
+        }
+
+        table.baseline-aligned td {
+            vertical-align: baseline;
+        }
+    </style>
+
+    <h2>Travel History</h2>
+
+    <section id="exposure-and-travel" headerLabel="Exposure and Travel">
+        <div>
+            <p>
+                <obs id="occupation" style="radio" conceptId="CIEL:1542" answerConceptIds="CIEL:159465,CIEL:5619,CIEL:165796,CIEL:5622">
+                    <controls>
+                        <when value="CIEL:5619" thenDisplay="#healthcare-worker-additional"/>
+                        <when value="CIEL:5622" thenDisplay="#other-occupation"/>
+                    </controls>
+                </obs>
+            </p>
+            <span id="healthcare-worker-additional">
+                <p>
+                    <obs id="healthcare-worker-country" conceptId="CIEL:165655" labelText="Country of employment" answerConceptSetIds="CIEL:165820"/>
+                </p>
+                <p>
+                    <obs id="healthcare-worker-city" conceptId="CIEL:160632" labelText="City where employed" answerConceptId="CIEL:165654"/>
+                </p>
+                <p>
+                    <obs id="healthcare-worker-facility-name" conceptId="CIEL:162724" labelText="Health facility name"/>
+                </p>
+            </span>
+            <p id="other-occupation">
+                <obs id="other-occupation-obs" conceptId="CIEL:160632" labelText="Please specify" answerConceptId="CIEL:165219"/>
+            </p>
+            <p>
+                <obs id="travel" style="yes_no" conceptId="CIEL:165656" labelText="Has the patient travelled in the past 14 days?" answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"/>
+            </p>
+            <span id="travel-history-1">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165820"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false" />
+                    </p>
+                </obsGroup>
+            </span>
+            <span id="travel-history-2">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165820"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false" />
+                    </p>
+                </obsGroup>
+            </span>
+            <span id="travel-history-3">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165820"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false" />
+                    </p>
+                </obsGroup>
+            </span>
+            <span id="travel-history-4">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165820"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false" />
+                    </p>
+                </obsGroup>
+            </span>
+            <span id="travel-history-5">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165820"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false" />
+                    </p>
+                </obsGroup>
+            </span>
+            <p>
+                <obs id="visit-healthcare-facility" style="yes_no" conceptId="CIEL:165833" labelText="Has the patient visited any health care facilities in the 14 days prior to symptom onset?" answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"/>
+            </p>
+        </div>
+    </section>
+
+    <submit/>
+
+</htmlform>
