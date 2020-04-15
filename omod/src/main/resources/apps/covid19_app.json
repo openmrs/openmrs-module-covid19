@@ -1,0 +1,62 @@
+[
+    {
+        "id": "covid19.screening",
+        "order": 17,
+        "config": {
+            "label": "covid19.screening.label",
+            "afterSelectedUrl": "/htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patientId}}&formUuid=3e9e5cd2-de55-438b-a6ec-8649ddc1bec0&createVisit=true&breadcrumbOverride={{breadcrumbOverride}}",
+            "showLastViewedPatients": true,
+            "heading": ""
+        },
+        "extensions": [
+            {
+                "id": "covid19.screening.homepageLink",
+                "extensionPointId":  "org.openmrs.referenceapplication.homepageLink",
+                "icon": "icon-check",
+                "label": "covid19.screening.label",
+                "type": "link",
+                "url": "coreapps/findpatient/findPatient.page?app=covid19.screening",
+                "requiredPrivilege": "App: coreapps.findPatient"
+            },
+            {
+                "id": "covid19.screening.visitLink",
+                "extensionPointId": "patientDashboard.visitActions",
+                "icon": "icon-check",
+                "label": "covid19.screening.label",
+                "url": "htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patient.patientId}}&visit={{visit.uuid}}&formUuid=3e9e5cd2-de55-438b-a6ec-8649ddc1bec0&returnUrl={{returnUrl}}&breadcrumbOverride={{breadcrumbOverride}}",
+                "type": "link",
+                "requiredPrivilege": "Add Encounters"
+            }
+        ]
+    },
+    {
+        "id": "covid19.casereport",
+        "order": 18,
+        "config": {
+            "label": "covid19.casereport.label",
+            "afterSelectedUrl": "/htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patientId}}&formUuid=39ddd651-d561-46ab-92db-f6a169497b20createVisit=true&breadcrumbOverride={{breadcrumbOverride}}",
+            "showLastViewedPatients": true,
+            "heading": ""
+        },
+        "extensions": [
+            {
+                "id": "covid19.casereport.homepageLink",
+                "extensionPointId":  "org.openmrs.referenceapplication.homepageLink",
+                "icon": "icon-check",
+                "label": "covid19.casereport.label",
+                "type": "link",
+                "url": "coreapps/findpatient/findPatient.page?app=covid19.casereport",
+                "requiredPrivilege": "App: coreapps.findPatient"
+            },
+            {
+                "id": "covid19.casereport.visitLink",
+                "extensionPointId": "patientDashboard.visitActions",
+                "icon": "icon-check",
+                "label": "covid19.casereport.label",
+                "url": "htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patient.patientId}}&visit={{visit.uuid}}&formUuid=39ddd651-d561-46ab-92db-f6a169497b20&returnUrl={{returnUrl}}&breadcrumbOverride={{breadcrumbOverride}}",
+                "type": "link",
+                "requiredPrivilege": "Add Encounters"
+            }
+        ]
+    }
+]

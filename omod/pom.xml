@@ -15,8 +15,8 @@
 	<dependencies>
         <dependency>
             <groupId>org.openmrs.module</groupId>
-            <artifactId>covid19-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>${project.parent.artifactId}-api</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 		<dependency>
 			<groupId>org.openmrs.web</groupId>

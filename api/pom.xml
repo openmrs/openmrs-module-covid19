@@ -9,6 +9,17 @@
 
 	<artifactId>covid19-api</artifactId>
 	<packaging>jar</packaging>
-	<name>COVID19 API</name>
-	<description>API project for COVID19</description>
+	<name>COVID-19 API</name>
+	<description>API project for COVID-19</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>htmlformentry-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>htmlformentryui-omod</artifactId>
+		</dependency>
+	</dependencies>
 </project>

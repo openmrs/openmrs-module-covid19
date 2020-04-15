@@ -1,0 +1,439 @@
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+-->
+<htmlform formUuid="39ddd651-d561-46ab-92db-f6a169497b20" formName="COVID-19 Case Reporting Form" formVersion="0.1"
+          encounterUuid="cfb13c00-ffcc-4e98-8bc0-60d50e7d34ee">
+    <macros>
+        headerColor = #009d8e
+        fontOnHeaderColor = white
+    </macros>
+
+    <script type="text/javascript">
+        (function ($j) {
+            $j(document).ready(function () {
+                $j('#1-removeEntry').remove();
+                $j('#10-addEntry').remove();
+                $j('#1-toggleContainer').show();
+
+                $j('#11-removeEntry').remove();
+                $j('#20-addEntry').remove();
+                $j('#11-toggleContainer').show();
+
+                $j('button.addEntry').live("click", function () {
+                    var id = parseInt(this.id);
+                    var correctedAddButtonId = id + 1;
+                    var contentAddId = "#" + correctedAddButtonId + "-toggleContainer";
+                    $j(contentAddId).toggle(true);
+                    $j('#' + this.id).toggle(false);
+                    $j('#' + id + '-removeEntry').toggle(false);
+                    return false;
+                });
+
+                $j('button.removeEntry').live("click", function () {
+                    var id = parseInt(this.id);
+                    var correctedRemoveButtonId = id - 1;
+                    var contentAddId = "#" + id + "-toggleContainer";
+                    $j(contentAddId).toggle(false);
+                    $j(':input:not(:button)', contentAddId).val([]);
+                    $j('#' + correctedRemoveButtonId + '-addEntry').toggle(true);
+                    $j('#' + correctedRemoveButtonId + '-removeEntry').toggle(true);
+
+                    return false;
+                });
+            });
+        })(jQuery);
+    </script>
+
+    <style>
+        .section {
+            border: 1px solid $headerColor;
+            padding: 2px;
+            text-align: left;
+            margin-bottom: 1em;
+        }
+
+        .sectionHeader {
+            background-color: $headerColor;
+            color: $fontOnHeaderColor;
+            display: block;
+            padding: 2px;
+            font-weight: bold;
+        }
+
+        table.baseline-aligned td {
+            vertical-align: baseline;
+        }
+    </style>
+
+    <h2>COVID-19 Surveillance</h2>
+
+    <section headerLabel="Encounter Details">
+        <div>
+            <p>Location:
+                <encounterLocation type="autocomplete"/>
+            </p>
+            <p>Provider:
+                <encounterProvider type="autocomplete"/>
+            </p>
+        </div>
+    </section>
+
+    <section id="reporting-information" headerLabel="Reporting Information">
+        <div>
+            <p>
+                Date of Reporting:
+                <encounterDate default="now" showTime="false" required="true"/>
+            </p>
+            <p>
+                <obs id="reporting-institution" conceptId="CIEL:165846" labelText="Reporting Institution"/>
+            </p>
+            <p>
+                <obs id="reporting-country" style="autocomplete" conceptId="CIEL:165847" labelText="Reporting Country"
+                     answerConceptSetIds="CIEL:165657"/>
+            </p>
+            <p>
+                <obs id="test-reason" conceptId="CIEL:164126" labelText="Why tested for COVID-19?"
+                     answerConceptIds="CIEL:162633,CIEL:165650,CIEL:165651,CIEL:165652,CIEL:165653,CIEL:1067,CIEL:5622">
+                    <controls>
+                        <when value="CIEL:5622" thenDisplay="#other-test-reason"/>
+                    </controls>
+                </obs>
+            </p>
+            <p id="other-test-reason">
+                <obs conceptId="CIEL:160632" answerConceptId="CIEL:164126" labelText="Please explain"/>
+            </p>
+            <p id="case-classification">
+                <obs style="dropdown" conceptId="CIEL:165793"
+                     labelText="Is the case confirmed, probable or suspected, as per case definition"
+                     answerConceptIds="CIEL:165792,CIEL:162863,CIEL:162743"/>
+            </p>
+            <p>
+                <obs id="detected-poe" style="yes_no" conceptId="CIEL:165651"
+                     labelText="Was the case detected at a point of entry?" answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067">
+                    <controls>
+                        <when value="CIEL:1065" thenDisplay="#date-detected-poe"/>
+                    </controls>
+                </obs>
+            </p>
+            <p id="date-detected-poe">
+                <obs conceptId="CIEL:162869" labelText="Date detected" allowTime="false"/>
+            </p>
+        </div>
+    </section>
+
+    <section id="patient-information" headerLabel="Patient Information">
+        <div>
+            <p>
+                Date of Birth:
+                <lookup expression="$patient.birthdate"/>
+            </p>
+            <p>
+                <obs id="sex" conceptId="CIEL:1533" labelText="Sex at birth"
+                     answerConceptIds="CIEL:1534,CIEL:1535" answerLabels="Male,Female">
+                    <controls>
+                        <when value="CIEL:1535" thenDisplay="#pregnant"/>
+                    </controls>
+                </obs>
+            </p>
+            <obsGroup groupingConceptId="CIEL:165794">
+                <p>
+                    <obs id="country-diagnosed" style="autocomplete" conceptId="165903" labelText="Country where case diagnosed"
+                         answerConceptSetIds="CIEL:165657"/>
+                </p>
+                <p>
+                    <obs id="province" conceptId="CIEL:165851"
+                         labelText="Province, state, region, or prefecture where case diagnosed"/>
+                </p>
+                <p>
+                    <obs id="district" conceptId="CIEL:162689"
+                         labelText="District, county or municipality where case diagnosed"/>
+                </p>
+            </obsGroup>
+            <p>
+                <obs id="country-of-residence" style="autocomplete" conceptId="CIEL:165198" labelText="Usual country of residence"
+                     answerConceptSetIds="CIEL:165657"/>
+            </p>
+            <p>
+                <obs id="province-of-residence" conceptId="CIEL:165197" labelText="Province of usual residence"/>
+            </p>
+            <p>
+                <obs id="district-of-residence" conceptId="CIEL:162689" labelText="District of usual residence"/>
+            </p>
+        </div>
+    </section>
+
+    <section id="clinical-status" headerLabel="Clinical Status">
+        <div>
+            <p>
+                <obs id="confirmation-test-date" conceptId="CIEL:163724"
+                     labelText="Date of first laboratory confirmation tests" allowTime="false"/>
+            </p>
+            <repeat>
+                <template>
+                    <span id="{n}-toggleContainer" style="display: none;">
+                        <p>
+                            <obs style="autocomplete" conceptId="CIEL:162087" labelText="Lab test used"
+                                 answerClasses="Test"/>
+                            <button id="{n}-addEntry" class="addEntry">Add</button>
+                            <button id="{n}-removeEntry" class="removeEntry">Remove</button>
+                        </p>
+                    </span>
+                </template>
+                <render n="1"/>
+                <render n="2"/>
+                <render n="3"/>
+                <render n="4"/>
+                <render n="5"/>
+                <render n="6"/>
+                <render n="7"/>
+                <render n="8"/>
+                <render n="9"/>
+                <render n="10"/>
+            </repeat>
+            <p>
+                <obs id="symptoms-at-collection" style="yes_no" conceptId="CIEL:1729"
+                     labelText="Any symptoms or signs at time of specimen collection that resulted in first laboratory confirmation"
+                     answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"/>
+            </p>
+            <p>
+                <obs id="symptom-onset-date" conceptId="CIEL:1730" labelText="Date of onset of symptoms" allowTime="false"/>
+            </p>
+            <p>
+                <obs id="underlying-comorbidity" style="yes_no" conceptId="CIEL:162747"
+                     labelText="Any underlying conditions or comorbidities?"
+                     answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067">
+                    <controls>
+                        <when value="CIEL:1065" thenDisplay="#comorbidities"/>
+                    </controls>
+                </obs>
+
+            </p>
+            <obsGroup id="comorbidities" groupingConceptId="CIEL:1284">
+                <excludeIf velocityTest="$patient.gender != 'F'">
+                    <div id="pregnant">
+                        <p>
+                            <obs id="is-pregnant" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:1434"
+                                 answerLabel="Pregnant" toggle="pregnancy-trimester"/>
+                            <obs id="pregnancy-trimester" conceptId="CIEL:160665"
+                                 answerConceptIds="CIEL:1721,CIEL:1722,CIEL:1723"
+                                 answerLabels="First Trimester,Second Trimester,Third Trimester"/>
+                        </p>
+                        <p>
+                            <obs id="postpartum" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:129317"
+                                 answerLabel="Post-partum (&lt; 6 weeks)"/>
+                        </p>
+                    </div>
+                </excludeIf>
+                <p>
+                    <obs id="cardiovascular" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:119270"
+                         answerLabel="Cardiovascular disease, including hypertension"/>
+                </p>
+                <p>
+                    <obs id="immunodeficiency" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:117277"
+                         answerLabel="Immunodeficiency, including HIV"/>
+                </p>
+                <p>
+                    <obs id="diabetes" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:119481"
+                         answerLabel="Diabetes"/>
+                </p>
+                <p>
+                    <obs id="renal-disease" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:6033"
+                         answerLabel="Renal disease"/>
+                </p>
+                <p>
+                    <obs id="liver-disease" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:6032"
+                         answerLabel="Liver disease"/>
+                </p>
+                <p>
+                    <obs id="lung-disease" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:155569"
+                         answerLabel="Chronic lung disease"/>
+                </p>
+                <p>
+                    <obs id="chronic-neurological" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:165646"
+                         answerLabel="Chronic neurological or neuromuscular disease"/>
+                </p>
+                <p>
+                    <obs id="malignancy" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:116031"
+                         answerLabel="Malignancy"/>
+                </p>
+                <repeat>
+                    <template>
+                        <span id="{n}-toggleContainer" style="display: none;">
+                            <p>
+                                <obs style="autocomplete" conceptId="CIEL:162747" labelText="Other conditions"
+                                     answerClasses="Diagnosis" answerLabel="Other(s)"/>
+                                <button id="{n}-addEntry" class="addEntry">Add</button>
+                                <button id="{n}-removeEntry" class="removeEntry">Remove</button>
+                            </p>
+                        </span>
+                    </template>
+                    <render n="11"/>
+                    <render n="12"/>
+                    <render n="13"/>
+                    <render n="14"/>
+                    <render n="15"/>
+                    <render n="16"/>
+                    <render n="17"/>
+                    <render n="18"/>
+                    <render n="19"/>
+                    <render n="20"/>
+                </repeat>
+                <p>
+                    <obs conceptId="CIEL:163201" labelText="Smoking status"
+                         answerConceptIds="CIEL:152722,CIEL:152807,CIEL:163198,CIEL:163200"/>
+                </p>
+            </obsGroup>
+        </div>
+    </section>
+
+    <section id="clinical-course" headerLabel="Clinical Course">
+        <div>
+            <p>
+                <obs id="admission-status" style="yes_no" conceptId="CIEL:163403" labelText="Admitted to hospital?"
+                     answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067">
+                    <controls>
+                        <when value="CIEL:1065" thenDisplay="#admission-date"/>
+                    </controls>
+                </obs>
+            </p>
+            <p id="admission-date">
+                <obs conceptId="CIEL:1640" labelText="First date of admission to hospital" allowTime="false"/>
+            </p>
+            <p>
+                <obs id="icu-care" conceptId="CIEL:165644" labelText="Did the patient receive care in the ICU?"
+                     answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067">
+                    <controls>
+                        <when value="CIEL:1065" thenDisplay="#ventillated"/>
+                    </controls>
+                </obs>
+            </p>
+            <span id="icu-followup">
+                <p>
+                    <obs id="ventillated" conceptId="CIEL:165647" labelText="Was the patient ventillated?"
+                         answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"/>
+                </p>
+                <p>
+                    <obs id="ecmo" conceptId="CIEL:165643" labelText="Did the patient receive ECMO?"
+                         answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"/>
+                </p>
+            </span>
+            <p>
+                <obs id="isolated" conceptId="CIEL:165795" labelText="Was the patient isolated?"
+                     answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067">
+                    <controls>
+                        <when value="CIEL:1065" thenDisplay="#date-isolated"/>
+                    </controls>
+                </obs>
+            </p>
+            <p id="date-isolated">
+                <obs conceptId="CIEL:165648" labelText="Date of isolation" allowTime="false"/>
+            </p>
+            <p>
+                <obs id="outcome-of-illness" conceptId="CIEL:159640" labelText="Outcome of illness"
+                     answerConceptIds="CIEL:165871,CIEL:165870,CIEL:160432,CIEL:1067"
+                     answerLabels="Recovered,Not recovered,Died,Unknown">
+                    <controls>
+                        <when value="CIEL:160432" thenDisplay="#date-of-death"/>
+                    </controls>
+                </obs>
+            </p>
+            <p id="date-of-death">
+                <obs conceptId="CIEL:1543" labelText="Date of death" allowTime="false"/>
+            </p>
+        </div>
+    </section>
+
+    <section id="exposure-and-travel" headerLabel="Exposure and Travel">
+        <div>
+            <p>
+                <obs id="occupation" conceptId="CIEL:1542" labelText="Is the patient employed in an at-risk occupation?"
+                     answerConceptIds="CIEL:159465,CIEL:5619,CIEL:165796,CIEL:5622">
+                    <controls>
+                        <when value="CIEL:5619" thenDisplay="#healthcare-worker-additional"/>
+                        <when value="CIEL:5622" thenDisplay="#other-occupation"/>
+                    </controls>
+                </obs>
+            </p>
+            <span id="healthcare-worker-additional">
+                <p>
+                    <obs id="healthcare-worker-country" style="autocomplete" conceptId="CIEL:165655" labelText="Country of employment"
+                         answerConceptSetIds="CIEL:165657"/>
+                </p>
+                <p>
+                    <obs id="healthcare-worker-city" conceptId="CIEL:160632" labelText="City where employed"
+                         answerConceptId="CIEL:165654"/>
+                </p>
+                <p>
+                    <obs id="healthcare-worker-facility-name" conceptId="CIEL:162724" labelText="Health facility name"/>
+                </p>
+            </span>
+            <p id="other-occupation">
+                <obs conceptId="CIEL:160632" labelText="Please specify" answerConceptId="CIEL:165219"/>
+            </p>
+            <p>
+                <obs id="travel" style="yes_no" conceptId="CIEL:165656"
+                     labelText="Has the patient travelled in the past 14 days?"
+                     answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"/>
+            </p>
+            <span id="travel-history-1">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs style="autocomplete" conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165657"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false"/>
+                    </p>
+                </obsGroup>
+            </span>
+            <span id="travel-history-2">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs style="autocomplete" conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165657"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false"/>
+                    </p>
+                </obsGroup>
+            </span>
+            <span id="travel-history-3">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs style="autocomplete" conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165657"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false"/>
+                    </p>
+                </obsGroup>
+            </span>
+            <span id="travel-history-4">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs style="autocomplete" conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165657"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false"/>
+                    </p>
+                </obsGroup>
+            </span>
+            <span id="travel-history-5">
+                <obsGroup groupingConceptId="CIEL:162605">
+                    <p>
+                        <obs style="autocomplete" conceptId="CIEL:162604" labelText="Country" answerConceptSetIds="CIEL:165657"/>
+                        <obs conceptId="CIEL:165645" labelText="City visited"/>
+                        <obs conceptId="CIEL:162602" labelText="Date of departure" allowTime="false"/>
+                    </p>
+                </obsGroup>
+            </span>
+            <p>
+                <obs id="visit-healthcare-facility" style="yes_no" conceptId="CIEL:165833"
+                     labelText="Has the patient visited any health care facilities in the 14 days prior to symptom onset?"
+                     answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"/>
+            </p>
+        </div>
+    </section>
+
+    <submit/>
+
+</htmlform>

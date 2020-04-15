@@ -1,0 +1,224 @@
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+-->
+<htmlform formUuid="3e9e5cd2-de55-438b-a6ec-8649ddc1bec0" formName="COVID-19 Screening Form" formVersion="0.1"
+          encounterUuid="0dbe80d4-e174-43f8-8636-e28e5d840034">
+    <macros>
+        headerColor = #009d8e
+        fontOnHeaderColor = white
+    </macros>
+
+    <script type="text/javascript">
+        (function ($j) {
+            $j(document).ready(function () {
+                $j('#1-removeEntry').remove();
+                $j('#10-addEntry').remove();
+                $j('#1-toggleContainer').show();
+
+                $j('#11-removeEntry').remove();
+                $j('#20-addEntry').remove();
+                $j('#11-toggleContainer').show();
+
+                $j('button.addEntry').live("click", function () {
+                    var id = parseInt(this.id);
+                    var correctedAddButtonId = id + 1;
+                    var contentAddId = "#" + correctedAddButtonId + "-toggleContainer";
+                    $j(contentAddId).toggle(true);
+                    $j('#' + this.id).toggle(false);
+                    $j('#' + id + '-removeEntry').toggle(false);
+                    return false;
+                });
+
+                $j('button.removeEntry').live("click", function () {
+                    var id = parseInt(this.id);
+                    var correctedRemoveButtonId = id - 1;
+                    var contentAddId = "#" + id + "-toggleContainer";
+                    $j(contentAddId).toggle(false);
+                    $j(':input:not(:button)', contentAddId).val([]);
+                    $j('#' + correctedRemoveButtonId + '-addEntry').toggle(true);
+                    $j('#' + correctedRemoveButtonId + '-removeEntry').toggle(true);
+
+                    return false;
+                });
+            });
+        })(jQuery);
+    </script>
+
+    <style>
+        .section {
+            border: 1px solid $headerColor;
+            padding: 2px;
+            text-align: left;
+            margin-bottom: 1em;
+        }
+
+        .sectionHeader {
+            background-color: $headerColor;
+            color: $fontOnHeaderColor;
+            display: block;
+            padding: 2px;
+            font-weight: bold;
+        }
+
+        table.baseline-aligned td {
+            vertical-align: baseline;
+        }
+    </style>
+
+    <h2>COVID-19 Screening Form</h2>
+
+    <section headerLabel="Encounter Details">
+        <div>
+            <p>Date:
+                <encounterDate default="today"/>
+            </p>
+            <p>Location:
+                <encounterLocation type="autocomplete"/>
+            </p>
+            <p>Provider:
+                <encounterProvider type="autocomplete"/>
+            </p>
+        </div>
+    </section>
+
+    <section id="physical-exam" headerLabel="Physical Exam">
+        <obsGroup groupingConceptId="CIEL:1728">
+            <p>
+                <obs style="checkbox" conceptId="CIEL:162737" answerLabel="Pharyngitis" answerConceptId="CIEL:130305"/>
+            </p>
+            <p>
+                <obs style="checkbox" conceptId="CIEL:162737" answerLabel="Conjunctival injection"
+                     answerConceptId="CIEL:517"/>
+            </p>
+            <p>
+                <obs style="checkbox" conceptId="CIEL:162737" answerLabel="Dyspnea" answerConceptId="CIEL:122496"/>
+            </p>
+            <p>
+                <obs style="checkbox" conceptId="CIEL:162737" answerLabel="Tachypnea" answerConceptId="CIEL:125061"/>
+            </p>
+            <p>
+                <obs style="checkbox" conceptId="CIEL:162737" answerLabel="Abnormal lung auscultation"
+                     answerConceptId="CIEL:150876"/>
+            </p>
+            <p>
+                <obs style="checkbox" conceptId="CIEL:162737" answerLabel="Abnormal lung x-ray findings"
+                     answerConceptId="CIEL:154435"/>
+            </p>
+            <p>
+                <obs style="checkbox" conceptId="CIEL:162737" answerLabel="Seizures" answerConceptId="CIEL:206"/>
+            </p>
+            <p>
+                <obs style="checkbox" conceptId="CIEL:162737" answerLabel="Coma" answerConceptId="CIEL:144576"/>
+            </p>
+            <repeat>
+                <template>
+                    <span id="{n}-toggleContainer" style="display: none;">
+                        <p>
+                            <obs style="autocomplete" conceptId="CIEL:162737" labelText="Other conditions"
+                                 answerClasses="Diagnosis" answerLabel="Other(s)"/>
+                            <button id="{n}-addEntry" class="addEntry mr-1">Add</button>
+                            <button id="{n}-removeEntry" class="removeEntry">Remove</button>
+                        </p>
+                    </span>
+                </template>
+                <render n="1"/>
+                <render n="2"/>
+                <render n="3"/>
+                <render n="4"/>
+                <render n="5"/>
+                <render n="6"/>
+                <render n="7"/>
+                <render n="8"/>
+                <render n="9"/>
+                <render n="10"/>
+            </repeat>
+        </obsGroup>
+    </section>
+
+    <section id="conditions" headerLabel="Conditions">
+        <obsGroup id="comorbidities" groupingConceptId="CIEL:1284">
+            <excludeIf velocityTest="$patient.gender != 'F'">
+                <div id="pregnant">
+                    <p>
+                        <obs id="is-pregnant" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:1434"
+                             answerLabel="Pregnant" toggle="pregnancy-trimester"/>
+                        <obs id="pregnancy-trimester" conceptId="CIEL:160665"
+                             answerConceptIds="CIEL:1721,CIEL:1722,CIEL:1723"
+                             answerLabels="First Trimester,Second Trimester,Third Trimester"/>
+                    </p>
+                    <p>
+                        <obs id="postpartum" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:129317"
+                             answerLabel="Post-partum (&lt; 6 weeks)"/>
+                    </p>
+                </div>
+            </excludeIf>
+            <p>
+                <obs id="cardiovascular" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:119270"
+                     answerLabel="Cardiovascular disease, including hypertension"/>
+            </p>
+            <p>
+                <obs id="immunodeficiency" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:117277"
+                     answerLabel="Immunodeficiency, including HIV"/>
+            </p>
+            <p>
+                <obs id="diabetes" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:119481"
+                     answerLabel="Diabetes"/>
+            </p>
+            <p>
+                <obs id="renal-disease" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:6033"
+                     answerLabel="Renal disease"/>
+            </p>
+            <p>
+                <obs id="liver-disease" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:6032"
+                     answerLabel="Liver disease"/>
+            </p>
+            <p>
+                <obs id="lung-disease" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:155569"
+                     answerLabel="Chronic lung disease"/>
+            </p>
+            <p>
+                <obs id="chronic-neurological" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:165646"
+                     answerLabel="Chronic neurological or neuromuscular disease"/>
+            </p>
+            <p>
+                <obs id="malignancy" style="checkbox" conceptId="CIEL:162747" answerConceptId="CIEL:116031"
+                     answerLabel="Malignancy"/>
+            </p>
+            <repeat>
+                <template>
+                    <span id="{n}-toggleContainer" style="display: none;">
+                        <p>
+                            <obs style="autocomplete" conceptId="CIEL:162747" labelText="Other conditions"
+                                 answerClasses="Diagnosis" answerLabel="Other(s)"/>
+                            <button id="{n}-addEntry" class="addEntry mr-1">Add</button>
+                            <button id="{n}-removeEntry" class="removeEntry">Remove</button>
+                        </p>
+                    </span>
+                </template>
+                <render n="11"/>
+                <render n="12"/>
+                <render n="13"/>
+                <render n="14"/>
+                <render n="15"/>
+                <render n="16"/>
+                <render n="17"/>
+                <render n="18"/>
+                <render n="19"/>
+                <render n="20"/>
+            </repeat>
+            <p>
+                <obs conceptId="CIEL:163201" labelText="Smoking status"
+                     answerConceptIds="CIEL:152722,CIEL:152807,CIEL:163198,CIEL:163200"/>
+            </p>
+        </obsGroup>
+    </section>
+
+    <submit/>
+
+</htmlform>
