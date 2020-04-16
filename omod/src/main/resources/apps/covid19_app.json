@@ -4,7 +4,7 @@
         "order": 17,
         "config": {
             "label": "covid19.screening.label",
-            "afterSelectedUrl": "/htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patientId}}&formUuid=3e9e5cd2-de55-438b-a6ec-8649ddc1bec0&createVisit=true&breadcrumbOverride={{breadcrumbOverride}}",
+            "afterSelectedUrl": "/htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patientId}}&formUuid=3e9e5cd2-de55-438b-a6ec-8649ddc1bec0&createVisit=true",
             "showLastViewedPatients": true,
             "heading": ""
         },
@@ -23,7 +23,7 @@
                 "extensionPointId": "patientDashboard.visitActions",
                 "icon": "icon-check",
                 "label": "covid19.screening.label",
-                "url": "htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patient.patientId}}&visit={{visit.uuid}}&formUuid=3e9e5cd2-de55-438b-a6ec-8649ddc1bec0&returnUrl={{returnUrl}}&breadcrumbOverride={{breadcrumbOverride}}",
+                "url": "htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patient.patientId}}&visit={{visit.uuid}}&formUuid=3e9e5cd2-de55-438b-a6ec-8649ddc1bec0&returnUrl={{returnUrl}}",
                 "type": "link",
                 "requiredPrivilege": "Add Encounters"
             }
@@ -34,7 +34,7 @@
         "order": 18,
         "config": {
             "label": "covid19.casereport.label",
-            "afterSelectedUrl": "/htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patientId}}&formUuid=39ddd651-d561-46ab-92db-f6a169497b20createVisit=true&breadcrumbOverride={{breadcrumbOverride}}",
+            "afterSelectedUrl": "/htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patientId}}&formUuid=39ddd651-d561-46ab-92db-f6a169497b20&createVisit=true",
             "showLastViewedPatients": true,
             "heading": ""
         },
@@ -53,7 +53,7 @@
                 "extensionPointId": "patientDashboard.visitActions",
                 "icon": "icon-check",
                 "label": "covid19.casereport.label",
-                "url": "htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patient.patientId}}&visit={{visit.uuid}}&formUuid=39ddd651-d561-46ab-92db-f6a169497b20&returnUrl={{returnUrl}}&breadcrumbOverride={{breadcrumbOverride}}",
+                "url": "htmlformentryui/htmlform/enterHtmlFormWithStandardUi.page?patientId={{patient.patientId}}&visit={{visit.uuid}}&formUuid=39ddd651-d561-46ab-92db-f6a169497b20&returnUrl={{returnUrl}}",
                 "type": "link",
                 "requiredPrivilege": "Add Encounters"
             }
